@@ -17,50 +17,99 @@
  * if not, see <http://www.gnu.org/licenses/>.
  */
 #include "keyboard.h"
+#include <iostream>
+#include <cstdlib>
+
+static SDL_Joystick *joystick;
+static float steer;
+static float accel;
+static float brake;
 
 void Keyboard_Init()
 {
-	#ifdef WIN32
-		// No init required
-	#else
 	//TODO: Abfragen, ob initalisierung korrekt
-	//SDL_Rect rect;
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
 	SDL_SetVideoMode (100, 100, 24, SDL_SWSURFACE);
-	//SDL_WM_GrabInput(SDL_GRAB_ON);
-	SDL_EnableKeyRepeat (SDL_DEFAULT_REPEAT_DELAY, 1);
-	#endif
+	if(SDL_NumJoysticks() < 1){
+		cout << "Fehler, kein Joystick gefunden"<< endl;
+		exit(1);
+	}
+	SDL_JoystickEventState(SDL_ENABLE);
+	joystick = SDL_JoystickOpen(0);
+	steer = accel = brake = 0;	
 }
 
 void Keyboard_Quit()
 {
-	#ifdef WIN32
-		// No quit required
-	#else
 	SDL_Quit();
-	#endif
 }
 
-void Keyboard_Update()
+void Keyboard_Update(CarControl* cc)
 {
-	#ifdef WIN32
-		// No update required
-	#else
-	SDL_Event e;
-	SDL_PollEvent(&e);
-	#endif
+	cc->setAccel(accel);
+	cc->setBrake(brake);
+	cc->setSteer(steer);
+	SDL_Event event;
+	while(SDL_PollEvent(&event)){
+		switch(event.type){  
+			case SDL_JOYAXISMOTION:  /* Handle Joystick Motion */
+				if( event.jaxis.axis == 0){
+					//L
+					//std::cout << "L" << event.jaxis.value << endl; 
+					float g;
+					if ( ( event.jaxis.value < -3200 ) || (event.jaxis.value > 3200 ) )
+						g = ((float) event.jaxis.value) / 32768.0f;
+					else
+						g = 0;
+					cc->setSteer(-g);
+					steer = -g;
+				}
+				if( event.jaxis.axis == 4){
+					//RT
+					//std::cout << "RT" << event.jaxis.value << endl;
+					float g;
+					if ( ( event.jaxis.value < -3200 ) || (event.jaxis.value > 3200 ) )
+						g = ((float) event.jaxis.value + 32768) / 65535.0f;
+					else
+						g = 0;
+					cc->setAccel(g);
+					accel = g;
+				}
+				if( event.jaxis.axis == 5){
+					//LT
+					//std::cout << "LT" << event.jaxis.value << endl;
+					float g;
+					if ( ( event.jaxis.value < -3200 ) || (event.jaxis.value > 3200 ) )
+						g = ((float) event.jaxis.value + 32768) / 65535.0f;
+					else
+						g = 0;
+					cc->setBrake(g);
+					brake = g;
+				}
+				break;
+			case SDL_JOYBUTTONDOWN:  /* Handle Joystick Button Presses */
+				if ( event.jbutton.button == 1 ){
+					//B
+					if (cc->getGear() == -1){
+						cc->setGear(1);
+					}
+					else if (cc->getGear() < 6){
+						cc->setGear(cc->getGear() + 1);
+					}
+				}
+				if ( event.jbutton.button == 0 ){
+					//A
+					if (cc->getGear() == 1){
+						cc->setGear(-1);
+					}
+					else if ( cc->getGear() > 1){
+						cc->setGear(cc->getGear() - 1);
+					}
+				}
+				break;
+		}
+		
+		
+	}
+	
 }
-
-int Keyboard_GetState(int key)
-{
-	#ifdef WIN32
-	return GetAsyncKeyState(key);
-	#else
-	return SDL_GetKeyState(NULL)[key];
-	#endif
-}
-
-
-
-
-

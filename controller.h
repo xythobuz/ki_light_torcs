@@ -21,9 +21,6 @@ public:
 	virtual string getControllerName() { return "standard controller"; };
 
 private:
-	int lastFocus;
-	
-
 	// subfunction for the automated control
 	float accelControl(CarState* cs, CarControl* cc);
 
@@ -38,6 +35,18 @@ private:
 
 	// subfunction for the automated control
 	int gearControl(CarState* cs, CarControl* cc);
+        
+        //Stuct Datentyp fuer die Sensorwerte
+        struct sensors{
+            float angle;
+            int gear;
+            int rpm;
+            float speedX;
+            float speedY;      
+        };
+        
+        //Datei zum Speichern der Sensorwerte
+        FILE *inFileSensors;
 
 };
 

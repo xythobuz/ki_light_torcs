@@ -50,55 +50,8 @@ SimpleDriver::SimpleDriver(Controller* cntrl, string logfile, vector<pair<CarSta
 void SimpleDriver::manualControl(CarControl* cc)
 {
 	//Tastaturzustand aktualisieren
-	Keyboard_Update();
-	if (Keyboard_GetState(KEY_UP))
-	{
-		cc->setAccel(1.0f);
-		if (cc->getGear() == -1)
-		{
-			cc->setAccel(0.0f);
-			cc->setBrake(1.0f);
-		}		
-	}
-	if (Keyboard_GetState(KEY_DOWN))
-	{
-		cc->setBrake(1.0f);
-		if (cc->getGear() == -1)
-		{
-			cc->setAccel(1.0f);
-			cc->setBrake(0.0f);
-		}		
-	}
-	if (Keyboard_GetState(KEY_LEFT))
-	{
-		cc->setSteer(1.0f);
-	}
-	if (Keyboard_GetState(KEY_RIGHT))
-	{
-		cc->setSteer(-1.0f);
-	}
-	if (Keyboard_GetState(KEY_A))
-	{
-		if (cc->getGear() == -1)
-		{
-			cc->setGear(1);
-		}
-		else if (cc->getGear() < 60)
-		{
-			cc->setGear(cc->getGear() + 1);
-		}
-	}
-	if (Keyboard_GetState(KEY_Y))
-	{
-		if (cc->getGear() == 1)
-		{
-			cc->setGear(-1);
-		}
-		else if ( cc->getGear() > 1)
-		{
-			cc->setGear(cc->getGear() - 1);
-		}
-	}
+	Keyboard_Update(cc);
+	
 }
 
 // Hier kommen die Daten vom Server an und es muss entschieden werden mit welchen Commandos man darauf reagieren will.

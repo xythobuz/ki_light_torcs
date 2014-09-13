@@ -1,6 +1,6 @@
 CC            =  g++
 CPPFLAGS      = -Wall -g
-SDL			  = $(shell sdl-config --libs)
+SDL	      = $(shell sdl-config --libs)
 
 # Uncomment the following line for a verbose client
 #CPPFLAGS      = -Wall -g -D __UDP_CLIENT_VERBOSE__
@@ -14,7 +14,7 @@ DRIVER_OBJ = $(DRIVER_CLASS).o
 EXTFLAGS = -D __DRIVER_CLASS__=$(DRIVER_CLASS) -D __DRIVER_INCLUDE__=$(DRIVER_INCLUDE)
 EXTFLAGS += $(shell sdl-config --cflags)
 
-OBJECTS = pid.o WrapperBaseDriver.o SimpleParser.o CarState.o CarControl.o keyboard.o controller.o $(DRIVER_OBJ)
+OBJECTS = WrapperBaseDriver.o SimpleParser.o CarState.o CarControl.o keyboard.o controller.o $(DRIVER_OBJ)
 
 all: $(OBJECTS) client
 
