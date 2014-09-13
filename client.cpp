@@ -134,8 +134,8 @@ int main(int argc, char *argv[]) {
     // set default files
 
     // sourcefile und logfile dienen zum Speichern der Pfade für die Dateien.
-    string sourcefile = "./sourcefile.txt";
-    string logfile = "./logfile.txt";
+    string sourcefile = "data/sourcefile.txt";
+    string logfile = "data/logfile.txt";
 
     // An dieser Stelle kann auch ein anderer Controller verwandt werden. 
     // Das Laden des Codes in den #includes am Anfang der Datei nicht vergessen.
