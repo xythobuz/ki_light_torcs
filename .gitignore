@@ -3,3 +3,7 @@
 client
 client.dSYM
 data
+libANN.a
+ann2fig
+ann_sample
+ann_test
