@@ -1,9 +1,9 @@
 /*
  * File:        keyboard.h
- * Title:       
+ * Title:
  * Author:      Christian Eppler, Stefan Moebius
  * Created on:  22.05.2011
- * Version:     
+ * Version:
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation; either version 3
@@ -21,7 +21,7 @@
 #define KEYBOARDHELPER
 
 #include "CarControl.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 void Keyboard_Init();
 void Keyboard_Quit();

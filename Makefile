@@ -1,6 +1,7 @@
-CC            =  g++
-CPPFLAGS      = -Wall -g
-SDL	      = $(shell sdl-config --libs)
+CC       =  g++
+CPPFLAGS = -Wall -g
+SDL      = $(shell sdl-config --libs)
+UNAME    = $(shell uname -s)
 
 # Uncomment the following line for a verbose client
 #CPPFLAGS      = -Wall -g -D __UDP_CLIENT_VERBOSE__
@@ -32,7 +33,14 @@ client: client.cpp $(OBJECTS) ann
 		$(CC) $(CPPFLAGS) $(EXTFLAGS) $(SDL) -o client client.cpp $(OBJECTS) -L ann_1.1.2/lib -l ANN
 
 clean:
-	rm -f *.o client  
+	rm -f *.o client
+	make -C ann_1.1.2 clean
 
+ifeq ($(UNAME),Darwin)
+ann:
+	make -C ann_1.1.2 macosx-g++
+else
 ann:
 	make -C ann_1.1.2 linux-g++
+endif
+
