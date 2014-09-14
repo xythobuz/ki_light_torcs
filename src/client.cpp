@@ -1,8 +1,8 @@
 /***************************************************************************
- 
+
     file                 : client.cpp
     copyright            : (C) 2007 Daniele Loiacono
-	
+
  ***************************************************************************/
 
  /***************************************************************************
@@ -13,7 +13,7 @@
 								with //EDIT DATE                           *
  * 2012-04-13   Robin Lehmann   Some small changes, not really marked      *
  ***************************************************************************/
- 
+
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,8 +26,6 @@
 //#define WIN32 // maybe not necessary because already define
 
 #ifdef WIN32
-#define __DRIVER_CLASS__ SimpleDriver     // put here the name of your driver class //EDIT 2011-10-29 moved in WIN32 section
-#define __DRIVER_INCLUDE__ "SimpleDriver.h" // put here the filename of your driver h\\eader //EDIT 2011-10-29 moved in WIN32 section
 #include <WinSock.h>
 #else
 #include <netdb.h>
@@ -42,12 +40,9 @@
 #include <vector>
 #include <string>
 #include <fstream>
+
 #include "controller.h"
-
-// Hier eigenen Controller includen!
-
-
-#include __DRIVER_INCLUDE__
+#include "SimpleDriver.h"
 
 /*** defines for UDP *****/
 #define UDP_MSGLEN 1000
@@ -66,10 +61,6 @@ typedef struct sockaddr_in tSockAddrIn;
 #define INVALID(x) x < 0
 #endif
 
-class __DRIVER_CLASS__;
-typedef __DRIVER_CLASS__ tDriver;
-
-
 using namespace std;
 
 void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id, unsigned int &maxEpisodes,
@@ -77,18 +68,13 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
 
 int startClient(int argc, char* argv[], Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path, bool manual, bool logging);
 
-
-
-
-
-
 // Funktion zum laden von Pfaden. Der Parameter @file gibt an, wo sich die Datei befindet. Der Inhalt muss das Format CarState\nCarControl\n haben.
 
 vector<pair<CarState, CarControl> > generatePath(string file)
 {
     vector<pair<CarState, CarControl> > path;
     char s[1000];
-    fstream logfile;    
+    fstream logfile;
     logfile.open(file.c_str(),fstream::in);
 
     cout << "Loading data from " << file << endl;
@@ -102,7 +88,7 @@ vector<pair<CarState, CarControl> > generatePath(string file)
         value.first = CarState(ss.str());
         logfile.getline(s, 1000, '\n');
         ss.clear();
-        ss.str(string());        
+        ss.str(string());
         ss << s;
         value.second = CarControl(ss.str());
         path.push_back(value);
@@ -137,12 +123,6 @@ int main(int argc, char *argv[]) {
     string sourcefile = "data/sourcefile.txt";
     string logfile = "data/logfile.txt";
 
-    // An dieser Stelle kann auch ein anderer Controller verwandt werden. 
-    // Das Laden des Codes in den #includes am Anfang der Datei nicht vergessen.
-    // In Windows muss der eigene Controller im Projekt sein, unter Linux in die Zeile:
-    // OBJECTS = WrapperBaseDriver.o SimpleParser.o CarState.o CarControl.o keyboard.o controller.o $(DRIVER_OBJ)
-    // nach controller.o als Dateiname.o eintragen, sonst gehts nicht.
-    
     Controller* cntrl;
     cntrl = new Controller();
 
@@ -157,17 +137,17 @@ int main(int argc, char *argv[]) {
         cout << "7. Change file config" << endl;
         cout << "8. Change controller config" << endl;
         cout << "0. to quit." << endl;
-        
+
         cin >> input;
-        
-        if(input == 1) 
+
+        if(input == 1)
         {
             // Für Fall 1 werden die Standardparameter übergeben, dann kein Controller (NULL), der string logfile, kein Pfad (NULL)
             // manuelle Steuerung ist aktiviert (true) und logging ist ausgeschaltet (false)
 
             startClient(argc, argv, NULL, logfile, NULL, true, false);
         }
-        else if(input == 2) 
+        else if(input == 2)
         {
             // Für Fall 2 werden die Standardparameter übergeben, dann kein Controller (NULL), der string logfile, kein Pfad (NULL)
             // manuelle Steuerung ist aktiviert (true) und logging ist angeschaltet (true)
@@ -198,7 +178,7 @@ int main(int argc, char *argv[]) {
             path.clear();
         }
         else if(input == 6)
-        {          
+        {
             // Für Fall 6 werden die Standardparameter übergeben, der oben initialisierte Controller (cntrl), der string logfile, die Addresse des Pfades path (&path)
             // manuelle Steuerung ist aus (false) und logging ist angeschaltet (true)
 
@@ -272,11 +252,11 @@ int main(int argc, char *argv[]) {
 
     }
     while(input != 0);
-    
-    delete cntrl;    
+
+    delete cntrl;
 }
 
-// Im restlichen Teil des Codes wird der Datentransfer zwischen dem TORCs Server und dem Client hier geregelt. 
+// Im restlichen Teil des Codes wird der Datentransfer zwischen dem TORCs Server und dem Client hier geregelt.
 // Außerdem wird eine Driver Instanz d angelegt. An diese werden dann die Daten vom Server weitergeleitet und dessen Controlanweisungen werden an den Server gesandt.
 
 
@@ -304,7 +284,7 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
     char buf[UDP_MSGLEN];
 
 
-#ifdef WIN32 
+#ifdef WIN32
      /* WinSock Startup */
 
      WSADATA wsaData={0};
@@ -343,7 +323,7 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
 
     cout << "ID: "   << id     << endl;
 
-    cout << "MAX_STEPS: " << maxSteps << endl; 
+    cout << "MAX_STEPS: " << maxSteps << endl;
 
     cout << "MAX_EPISODES: " << maxEpisodes << endl;
 
@@ -376,7 +356,7 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
            hostInfo->h_addr_list[0], hostInfo->h_length);
     serverAddress.sin_port = htons(serverPort);
 
-    tDriver d(cntrl, logfile, path, manual, logging);
+    SimpleDriver d(cntrl, logfile, path, manual, logging);
     strcpy(d.trackName,trackName);
     d.stage = stage;
 

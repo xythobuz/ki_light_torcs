@@ -1,46 +1,69 @@
+
+# Configuration
+
 CC       =  g++
 CPPFLAGS = -Wall -g
 SDL      = $(shell sdl-config --libs)
 UNAME    = $(shell uname -s)
+EXTFLAGS = $(shell sdl-config --cflags)
+EXTFLAGS += -I ann_1.1.2/include
 
-# Uncomment the following line for a verbose client
-#CPPFLAGS      = -Wall -g -D __UDP_CLIENT_VERBOSE__
+# Files
 
-#Put here the name of your driver class
-DRIVER_CLASS = SimpleDriver
-#Put here the filename of your driver class header 
-DRIVER_INCLUDE = '"$(DRIVER_CLASS).h"' 
-DRIVER_OBJ = $(DRIVER_CLASS).o
+OBJECTS = build/CarControl.o
+OBJECTS += build/CarState.o
+OBJECTS += build/client.o
+OBJECTS += build/controller.o
+OBJECTS += build/keyboard.o
+OBJECTS += build/SimpleDriver.o
+OBJECTS += build/SimpleParser.o
+OBJECTS += build/WrapperBaseDriver.o
 
-EXTFLAGS = -D __DRIVER_CLASS__=$(DRIVER_CLASS) -D __DRIVER_INCLUDE__=$(DRIVER_INCLUDE)
-EXTFLAGS += $(shell sdl-config --cflags) -I ann_1.1.2/include
+HEADERS = src/BaseDriver.h
+HEADERS += src/CarControl.h
+HEADERS += src/CarState.h
+HEADERS += src/controller.h
+HEADERS += src/keyboard.h
+HEADERS += src/SimpleDriver.h
+HEADERS += src/SimpleParser.h
+HEADERS += src/WrapperBaseDriver.h
 
-OBJECTS = WrapperBaseDriver.o SimpleParser.o CarState.o CarControl.o keyboard.o controller.o $(DRIVER_OBJ)
+# Rules
 
-all: $(OBJECTS) client
+all: intro client
 
+run: intro client
+	./client
 
-.SUFFIXES : .o .cpp .c
+intro:
+	mkdir -p build
 
-.cpp.o :
-	$(CC) $(CPPFLAGS) $(EXTFLAGS) -c $<
+build/%.o : src/%.cpp $(HEADERS)
+	$(CC) $(CPPFLAGS) $(EXTFLAGS) -c $< -o $@
 
-.c.o :
-	$(CC) $(CPPFLAGS) $(EXTFLAGS) -c $<
-
-
-client: client.cpp $(OBJECTS) ann
-		$(CC) $(CPPFLAGS) $(EXTFLAGS) $(SDL) -o client client.cpp $(OBJECTS) -L ann_1.1.2/lib -l ANN
+client: ann $(OBJECTS)
+	$(CC) $(CPPFLAGS) $(EXTFLAGS) $(SDL) -o client $(OBJECTS) -L ann_1.1.2/lib -l ANN
 
 clean:
-	rm -f *.o client
-	make -C ann_1.1.2 clean
+	rm -f client
+	rm -rf build *.dSYM
+
+annclean:
+	@make -C ann_1.1.2 clean
 
 ifeq ($(UNAME),Darwin)
 ann:
-	make -C ann_1.1.2 macosx-g++
+	@make -C ann_1.1.2 macosx-g++
+	@echo
+	@echo "Built ANN library!"
+	@echo "Compiling client..."
+	@echo
 else
 ann:
-	make -C ann_1.1.2 linux-g++
+	@make -C ann_1.1.2 linux-g++
+	@echo
+	@echo "Built ANN library!"
+	@echo "Compiling client..."
+	@echo
 endif
 

@@ -1,8 +1,8 @@
 /***************************************************************************
- 
+
     file                 : CarState.h
     copyright            : (C) 2007 Daniele Loiacono
- 
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -62,30 +62,30 @@ CarState::toString()
 	str += SimpleParser::stringify("trackPos", this->trackPos);
 	str += SimpleParser::stringify("wheelSpinVel", this->wheelSpinVel, 4);
 	str += SimpleParser::stringify("z", this->z);
-	
+
 	return str;
-	        
+
 }
 
-float 
+float
 CarState::getAngle()
 {
         return angle;
 };
 
-void 
+void
 CarState::setAngle(float angle)
 {
         this->angle = angle;
 };
 
-float 
+float
 CarState::getCurLapTime()
 {
-        return curLapTime; 
+        return curLapTime;
 };
 
-void 
+void
 CarState::setCurLapTime(float curLapTime)
 {
         this->curLapTime = curLapTime;
@@ -166,13 +166,13 @@ CarState::setGear(int gear)
         this->gear = gear;
 };
 
-float 
+float
 CarState::getLastLapTime()
 {
         return lastLapTime;
 };
 
-void 
+void
 CarState::setLastLapTime(float lastLapTime)
 {
         this->lastLapTime = lastLapTime;
@@ -183,7 +183,7 @@ CarState::getOpponents(int i)
 {
         assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
         return opponents[i];
-        
+
 };
 
 void
@@ -276,19 +276,19 @@ CarState::getTrackPos()
 };
 
 void
-CarState::setTrackPos(float prackPos)
+CarState::setTrackPos(float trackPos)
 {
         this->trackPos = trackPos;
 };
 
-float 
+float
 CarState::getWheelSpinVel(int i)
 {
 	assert(i>=0 && i<4);
 	return wheelSpinVel[i];
 }
 
-void 
+void
 CarState::setWheelSpinVel(int i, float value)
 {
 	assert(i>=0 && i<4);
