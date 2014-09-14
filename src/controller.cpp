@@ -14,8 +14,7 @@ const static int dOut = 4;
 const static int dIn = 10;
 const static double eps = 0.5;
 
-Controller::Controller()
-{
+Controller::Controller() {
     std::ifstream dataIn("data/logfile.txt");
     int count = 0;
     for (std::string line; std::getline(dataIn,line);){
@@ -32,8 +31,8 @@ Controller::Controller()
     int i = 0;
     for (std::string line; std::getline(dataIn,line); i++){
         CarState cs(line);
-        if(!std::getline(dataIn,line)){
-            std::cout << "unerwartetes Dateiende" << endl;
+        if (!std::getline(dataIn,line)){
+            std::cout << "Unerwartetes Dateiende" << std::endl;
             throw 42;
         }
         CarControl cc(line);
@@ -52,23 +51,34 @@ Controller::Controller()
         actor[i][1] = cc.getGear();
         actor[i][2] = cc.getSteer();
         actor[i][3] = cc.getBrake();
+
+        int pc = i * 100 / n;
+        if (i < 100) {
+            std::cout << "0";
+            if (i < 10) {
+                std::cout << "0";
+            }
+        }
+        std::cout << "Training: " << pc << "%    \r";
     }
+
+    std::cout << "Finished reading training data (~"
+        << n * (dIn + dOut) * sizeof(double) / 1024 << "KB)!" << std::endl;
 
     tree = new ANNkd_tree(sensor, n, dIn);
 }
 
-Controller::~Controller()
-{
+Controller::~Controller() {
     delete tree;
     annDeallocPts(actor);
     annDeallocPts(sensor);
 }
 
-void Controller::generateVector(CarState* cs, CarControl* cc)
-{
+void Controller::generateVector(CarState* cs, CarControl* cc) {
     ANNpoint q = new ANNcoord[dIn];
     ANNcoord dist;
     ANNidx i;
+
     q[0] = cs->getAngle();
     q[1] = cs->getGear();
     q[2] = cs->getRpm();
@@ -80,7 +90,7 @@ void Controller::generateVector(CarState* cs, CarControl* cc)
     q[8] = cs->getTrack(5);
     q[9] = cs->getTrack(13);
 
-    tree->annkSearch(q,1,&i,&dist,eps);
+    tree->annkSearch(q, 1, &i, &dist, eps);
 
     cc->setAccel(actor[i][0]);
     cc->setGear(actor[i][1]);
@@ -89,3 +99,4 @@ void Controller::generateVector(CarState* cs, CarControl* cc)
 
     delete [] q;
 }
+

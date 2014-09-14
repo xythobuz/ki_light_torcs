@@ -46,10 +46,10 @@ copyright            : (C) 2007 Daniele Loiacono
 
 using namespace std;
 
-void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id, unsigned int &maxEpisodes,
-        unsigned int &maxSteps, char *trackName, SimpleDriver::tstage &stage);
+void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id,
+        unsigned int &maxEpisodes, unsigned int &maxSteps);
 
-int startClient(int argc, char* argv[], Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path, bool manual, bool logging);
+int startClient(int argc, char* argv[], Controller* cntrl, string logfile = "");
 
 int main(int argc, char *argv[]) {
     Controller* cntrl = NULL;
@@ -68,25 +68,21 @@ int main(int argc, char *argv[]) {
             std::cout << "Logfile path? data/";
             std::cin >> logfile;
             // Manueller Modus
-            startClient(argc, argv, NULL, "data/" + logfile, NULL, true, true);
+            startClient(argc, argv, NULL, "data/" + logfile);
         } else if (input == 2) {
             // Lazy initialization für Controller
             if (cntrl == NULL)
                 cntrl = new Controller();
 
             // Automatischer Modus
-            startClient(argc, argv, cntrl, "", NULL, false, false);
+            startClient(argc, argv, cntrl);
         }
     } while (input != 0);
 
     delete cntrl;
 }
 
-// Im restlichen Teil des Codes wird der Datentransfer zwischen dem TORCs Server und dem Client hier geregelt.
-// Außerdem wird eine Driver Instanz d angelegt. An diese werden dann die Daten vom Server weitergeleitet und dessen Controlanweisungen werden an den Server gesandt.
-
-int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path = NULL, bool manual = false, bool logging = false)
-{
+int startClient(int argc, char *argv[], Controller* cntrl, string logfile) {
     int socketDescriptor;
     int numRead;
 
@@ -95,8 +91,6 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
     char id[1000];
     unsigned int maxEpisodes;
     unsigned int maxSteps;
-    char trackName[1000];
-    SimpleDriver::tstage stage;
 
     struct sockaddr_in serverAddress;
     struct hostent *hostInfo;
@@ -104,8 +98,7 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
     fd_set readSet;
     char buf[UDP_MSGLEN];
 
-
-    parse_args(argc,argv,hostName,serverPort,id,maxEpisodes,maxSteps,trackName,stage);
+    parse_args(argc,argv,hostName,serverPort,id,maxEpisodes,maxSteps);
 
     hostInfo = gethostbyname(hostName);
     if (hostInfo == NULL)
@@ -116,22 +109,11 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
 
     // Print command line option used
     cout << "***********************************" << endl;
-    cout << "HOST: "   << hostName    << endl;
-    cout << "PORT: " << serverPort  << endl;
-    cout << "ID: "   << id     << endl;
-    cout << "MAX_STEPS: " << maxSteps << endl;
+    cout << "        HOST: " << hostName << endl;
+    cout << "        PORT: " << serverPort << endl;
+    cout << "          ID: " << id << endl;
+    cout << "   MAX_STEPS: " << maxSteps << endl;
     cout << "MAX_EPISODES: " << maxEpisodes << endl;
-    cout << "TRACKNAME: " << trackName << endl;
-
-    if (stage == SimpleDriver::WARMUP)
-        cout << "STAGE: WARMUP" << endl;
-    else if (stage == SimpleDriver::QUALIFYING)
-        cout << "STAGE:QUALIFYING" << endl;
-    else if (stage == SimpleDriver::RACE)
-        cout << "STAGE: RACE" << endl;
-    else
-        cout << "STAGE: UNKNOWN" << endl;
-
     cout << "***********************************" << endl;
 
     // Create a socket (UDP on IPv4 protocol)
@@ -148,9 +130,7 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
             hostInfo->h_addr_list[0], hostInfo->h_length);
     serverAddress.sin_port = htons(serverPort);
 
-    SimpleDriver d(cntrl, logfile, path, manual, logging);
-    strcpy(d.trackName,trackName);
-    d.stage = stage;
+    SimpleDriver d(cntrl, logfile);
 
     bool shutdownClient=false;
     unsigned long curEpisode=0;
@@ -283,28 +263,16 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
     return 0;
 }
 
-//void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id, unsigned int &maxEpisodes,
-//		  unsigned int &maxSteps,bool &noise, double &noiseAVG, double &noiseSTD, long &seed, char *trackName, SimpleDriver::tstage &stage)
-void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id, unsigned int &maxEpisodes,
-        unsigned int &maxSteps, char *trackName, SimpleDriver::tstage &stage)
-{
-    int		i;
-
+void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id,
+        unsigned int &maxEpisodes, unsigned int &maxSteps) {
     // Set default values
     maxEpisodes=0;
     maxSteps=0;
     serverPort=3001;
     strcpy(hostName,"localhost");
     strcpy(id,"championship2011");
-    //    noise=false;
-    //    noiseAVG=0;
-    //    noiseSTD=0.05;
-    //    seed=0;
-    strcpy(trackName,"unknown");
-    stage=SimpleDriver::UNKNOWN;
 
-
-    i = 1;
+    int i = 1;
     while (i < argc)
     {
         if (strncmp(argv[i], "host:", 5) == 0)
@@ -331,25 +299,6 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
         {
             sscanf(argv[i],"maxSteps:%ud",&maxSteps);
             i++;
-        }
-        //    	else if (strncmp(argv[i], "seed:", 5) == 0)
-        //    	{
-        //    	    	sscanf(argv[i],"seed:%ld",&seed);
-        //    	    	i++;
-        //    	}
-        else if (strncmp(argv[i], "track:", 6) == 0)
-        {
-            sscanf(argv[i],"track:%s",trackName);
-            i++;
-        }
-        else if (strncmp(argv[i], "stage:", 6) == 0)
-        {
-            int temp;
-            sscanf(argv[i],"stage:%d",&temp);
-            stage = (SimpleDriver::tstage) temp;
-            i++;
-            if (stage<SimpleDriver::WARMUP || stage > SimpleDriver::RACE)
-                stage = SimpleDriver::UNKNOWN;
         }
         else {
             i++;		/* ignore bad args */

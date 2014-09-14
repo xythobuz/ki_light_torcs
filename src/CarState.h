@@ -13,6 +13,7 @@ copyright            : (C) 2007 Daniele Loiacono
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 #ifndef CARSTATE_H_
 #define CARSTATE_H_
 
@@ -20,126 +21,95 @@ copyright            : (C) 2007 Daniele Loiacono
 #define TRACK_SENSORS_NUM 19
 #define OPPONENTS_SENSORS_NUM 36
 
-#include <iostream>
-#include <sstream>
-#include <cstring>
-#include <cassert>
+#include <string>
+
 #include "SimpleParser.h"
 
-using namespace std;
+class CarState {
+public:
 
-class CarState
-{
+    CarState(std::string sensors);
+    std::string toString();
 
-    private:
-        float angle;
-        float curLapTime;
-        float damage;
-        float distFromStart;
-        float distRaced;
-        float focus[FOCUS_SENSORS_NUM];
-        float fuel;
-        int   gear;
-        float lastLapTime;
-        float opponents[OPPONENTS_SENSORS_NUM];
-        int   racePos;
-        int   rpm;
-        float speedX;
-        float speedY;
-        float speedZ;
-        float track[TRACK_SENSORS_NUM];
-        float trackPos;
-        float wheelSpinVel[4];
-        float z;
+    float getAngle();
+    void setAngle(float angle);
 
+    float getCurLapTime();
+    void setCurLapTime(float curLapTime);
 
-    public:
+    float getDamage();
+    void setDamage(float damage);
 
-        CarState(){};
+    float getDistFromStart();
+    void setDistFromStart(float distFromStart);
 
-        CarState(string sensors);
+    float getDistRaced();
+    void setDistRaced(float distRaced);
 
-        string toString();
+    float getFocus(int i);
+    void setFocus(int i, float value);
 
-        /* Getter and setter methods */
+    float getFuel();
+    void setFuel(float fuel);
 
-        float getAngle();
+    int getGear();
+    void setGear(int gear);
 
-        void setAngle(float angle);
+    float getLastLapTime();
+    void setLastLapTime(float lastLapTime);
 
-        float getCurLapTime();
+    float getOpponents(int i);
+    void setOpponents(int i, float value);
 
-        void setCurLapTime(float curLapTime);
+    int getRacePos();
+    void setRacePos(int racePos);
 
-        float getDamage();
+    int getRpm();
+    void setRpm(int rpm);
 
-        void setDamage(float damage);
+    float getSpeedX();
+    void setSpeedX(float speedX);
 
-        float getDistFromStart();
+    float getSpeedY();
+    void setSpeedY(float speedY);
 
-        void setDistFromStart(float distFromStart);
+    float getSpeedZ();
+    void setSpeedZ(float speedZ);
 
-        float getDistRaced();
+    float getTrack(int i);
+    void setTrack(int i, float value);
 
-        void setDistRaced(float distRaced);
+    float getTrackPos();
+    void setTrackPos(float trackPos);
 
-        float getFocus(int i);
+    float getWheelSpinVel(int i);
+    void setWheelSpinVel(int i, float value);
 
-        void setFocus(int i, float value);
+    float getZ();
+    void setZ(float z);
 
-        float getFuel();
+private:
 
-        void setFuel(float fuel);
-
-        int getGear();
-
-        void setGear(int gear);
-
-        float getLastLapTime();
-
-        void setLastLapTime(float lastLapTime);
-
-        float getOpponents(int i);
-
-        void setOpponents(int i, float value);
-
-        int getRacePos();
-
-        void setRacePos(int racePos);
-
-        int getRpm();
-
-        void setRpm(int rpm);
-
-        float getSpeedX();
-
-        void setSpeedX(float speedX);
-
-        float getSpeedY();
-
-        void setSpeedY(float speedY);
-
-        float getSpeedZ();
-
-        void setSpeedZ(float speedZ);
-
-        float getTrack(int i);
-
-        void setTrack(int i, float value);
-
-        float getTrackPos();
-
-        void setTrackPos(float trackPos);
-
-        float getWheelSpinVel(int i);
-
-        void setWheelSpinVel(int i, float value);
-
-        float getZ();
-
-        void setZ(float z);
-
-
+    float angle;
+    float curLapTime;
+    float damage;
+    float distFromStart;
+    float distRaced;
+    float focus[FOCUS_SENSORS_NUM];
+    float fuel;
+    int gear;
+    float lastLapTime;
+    float opponents[OPPONENTS_SENSORS_NUM];
+    int racePos;
+    int rpm;
+    float speedX;
+    float speedY;
+    float speedZ;
+    float track[TRACK_SENSORS_NUM];
+    float trackPos;
+    float wheelSpinVel[4];
+    float z;
 };
 
-#endif /*CARSTATE_H_*/
+#endif
+

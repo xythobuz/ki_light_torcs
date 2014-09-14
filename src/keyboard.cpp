@@ -16,22 +16,24 @@
  * You should have received a copy of the GNU General Public License along with this program;
  * if not, see <http://www.gnu.org/licenses/>.
  */
-#include "keyboard.h"
+
+#include <SDL.h>
 #include <iostream>
 #include <cstdlib>
+
+#include "keyboard.h"
 
 static SDL_Joystick *joystick;
 static float steer;
 static float accel;
 static float brake;
 
-void Keyboard_Init()
-{
+void Keyboard_Init() {
     //TODO: Abfragen, ob initalisierung korrekt
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
     SDL_SetVideoMode (100, 100, 24, SDL_SWSURFACE);
     if(SDL_NumJoysticks() < 1){
-        cout << "Fehler, kein Joystick gefunden"<< endl;
+        std::cout << "Fehler, kein Joystick gefunden!" << std::endl;
         exit(1);
     }
     SDL_JoystickEventState(SDL_ENABLE);
@@ -39,19 +41,18 @@ void Keyboard_Init()
     steer = accel = brake = 0;
 }
 
-void Keyboard_Quit()
-{
+void Keyboard_Quit() {
     SDL_Quit();
 }
 
-void Keyboard_Update(CarControl* cc)
-{
+void Keyboard_Update(CarControl* cc) {
     cc->setAccel(accel);
     cc->setBrake(brake);
     cc->setSteer(steer);
+
     SDL_Event event;
-    while(SDL_PollEvent(&event)){
-        switch(event.type){
+    while (SDL_PollEvent(&event)){
+        switch (event.type){
             case SDL_JOYAXISMOTION:  /* Handle Joystick Motion */
                 if( event.jaxis.axis == 0){
                     //L
@@ -108,8 +109,6 @@ void Keyboard_Update(CarControl* cc)
                 }
                 break;
         }
-
-
     }
-
 }
+

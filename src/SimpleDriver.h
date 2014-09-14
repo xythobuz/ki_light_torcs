@@ -39,32 +39,14 @@ using namespace std;
 class SimpleDriver
 {
     private:
-        bool logging;
         string logfile;
         vector<pair<CarState, CarControl> >* log;
-
-        unsigned int position;
-        vector<pair<CarState, CarControl> >* path;
-
-        bool manual;
-
-        // controller for this car
         Controller* automatedControl;
 
     public:
 
-        typedef enum {
-            WARMUP,
-            QUALIFYING,
-            RACE,
-            UNKNOWN
-        } tstage;
-
-        tstage stage;
-        char trackName[100];
-
         // Constructor
-        SimpleDriver(Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path, bool manual, bool logging);
+        SimpleDriver(Controller* cntrl, string logfile);
 
         // Print a shutdown message
         void onShutdown();

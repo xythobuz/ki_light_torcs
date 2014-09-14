@@ -13,11 +13,12 @@ copyright            : (C) 2007 Daniele Loiacono
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include <cassert>
+
 #include "CarState.h"
 
-
-CarState::CarState(string sensors)
-{
+CarState::CarState(string sensors) {
     SimpleParser::parse(sensors, "angle", this->angle);
     SimpleParser::parse(sensors, "curLapTime", this->curLapTime);
     SimpleParser::parse(sensors, "damage", this->damage);
@@ -39,9 +40,7 @@ CarState::CarState(string sensors)
     SimpleParser::parse(sensors, "z", this->z);
 }
 
-    string
-CarState::toString()
-{
+string CarState::toString() {
     string str;
     str  = SimpleParser::stringify("angle", this->angle);
     str += SimpleParser::stringify("curLapTime", this->curLapTime);
@@ -62,247 +61,167 @@ CarState::toString()
     str += SimpleParser::stringify("trackPos", this->trackPos);
     str += SimpleParser::stringify("wheelSpinVel", this->wheelSpinVel, 4);
     str += SimpleParser::stringify("z", this->z);
-
     return str;
 
 }
 
-    float
-CarState::getAngle()
-{
+float CarState::getAngle() {
     return angle;
-};
+}
 
-    void
-CarState::setAngle(float angle)
-{
+void CarState::setAngle(float angle) {
     this->angle = angle;
-};
+}
 
-    float
-CarState::getCurLapTime()
-{
+float CarState::getCurLapTime() {
     return curLapTime;
-};
+}
 
-    void
-CarState::setCurLapTime(float curLapTime)
-{
+void CarState::setCurLapTime(float curLapTime) {
     this->curLapTime = curLapTime;
-};
+}
 
-    float
-CarState::getDamage()
-{
+float CarState::getDamage() {
     return damage;
-};
+}
 
-    void
-CarState::setDamage(float damage)
-{
+void CarState::setDamage(float damage) {
     this->damage = damage;
-};
+}
 
-    float
-CarState::getDistFromStart()
-{
+float CarState::getDistFromStart() {
     return distFromStart;
-};
+}
 
-    void
-CarState::setDistFromStart(float distFromStart)
-{
+void CarState::setDistFromStart(float distFromStart) {
     this->distFromStart = distFromStart;
-};
+}
 
-    float
-CarState::getDistRaced()
-{
+float CarState::getDistRaced() {
     return distRaced;
-};
+}
 
-    void
-CarState::setDistRaced(float distRaced)
-{
+void CarState::setDistRaced(float distRaced) {
     this->distRaced = distRaced;
-};
+}
 
-    float
-CarState::getFocus(int i)
-{
+float CarState::getFocus(int i) {
     assert(i>=0 && i<FOCUS_SENSORS_NUM);
     return focus[i];
-};
+}
 
-
-    void
-CarState::setFocus(int i, float value)
-{
+void CarState::setFocus(int i, float value) {
     assert(i>=0 && i<FOCUS_SENSORS_NUM);
     this->focus[i] = value;
-};
+}
 
-    float
-CarState::getFuel()
-{
+float CarState::getFuel() {
     return fuel;
-};
+}
 
-    void
-CarState::setFuel(float fuel)
-{
+void CarState::setFuel(float fuel) {
     this->fuel = fuel;
-};
+}
 
-    int
-CarState::getGear()
-{
+int CarState::getGear() {
     return gear;
-};
+}
 
-    void
-CarState::setGear(int gear)
-{
+void CarState::setGear(int gear) {
     this->gear = gear;
-};
+}
 
-    float
-CarState::getLastLapTime()
-{
+float CarState::getLastLapTime() {
     return lastLapTime;
-};
+}
 
-    void
-CarState::setLastLapTime(float lastLapTime)
-{
+void CarState::setLastLapTime(float lastLapTime) {
     this->lastLapTime = lastLapTime;
-};
+}
 
-    float
-CarState::getOpponents(int i)
-{
+float CarState::getOpponents(int i) {
     assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
     return opponents[i];
+}
 
-};
-
-    void
-CarState::setOpponents(int i, float value)
-{
+void CarState::setOpponents(int i, float value) {
     assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
     this->opponents[i] = value;
-};
+}
 
-    int
-CarState::getRacePos()
-{
+int CarState::getRacePos() {
     return racePos;
-};
+}
 
-    void
-CarState::setRacePos(int racePos)
-{
+void CarState::setRacePos(int racePos) {
     this->racePos = racePos;
-};
+}
 
-    int
-CarState::getRpm()
-{
+int CarState::getRpm() {
     return rpm;
-};
+}
 
-    void
-CarState::setRpm(int rpm)
-{
+void CarState::setRpm(int rpm) {
     this->rpm = rpm;
-};
+}
 
-    float
-CarState::getSpeedX()
-{
+float CarState::getSpeedX() {
     return speedX;
-};
+}
 
-    void
-CarState::setSpeedX(float speedX)
-{
+void CarState::setSpeedX(float speedX) {
     this->speedX = speedX;
-};
+}
 
-    float
-CarState::getSpeedY()
-{
+float CarState::getSpeedY() {
     return speedY;
-};
+}
 
-    void
-CarState::setSpeedY(float speedY)
-{
+void CarState::setSpeedY(float speedY) {
     this->speedY = speedY;
-};
+}
 
-    float
-CarState::getSpeedZ()
-{
+float CarState::getSpeedZ() {
     return speedZ;
-};
+}
 
-
-    void
-CarState::setSpeedZ(float speedZ)
-{
+void CarState::setSpeedZ(float speedZ) {
     this->speedZ = speedZ;
-};
+}
 
-    float
-CarState::getTrack(int i)
-{
+float CarState::getTrack(int i) {
     assert(i>=0 && i<TRACK_SENSORS_NUM);
     return track[i];
-};
+}
 
-
-    void
-CarState::setTrack(int i, float value)
-{
+void CarState::setTrack(int i, float value) {
     assert(i>=0 && i<TRACK_SENSORS_NUM);
     this->track[i] = value;
-};
+}
 
-    float
-CarState::getTrackPos()
-{
+float CarState::getTrackPos() {
     return trackPos;
-};
+}
 
-    void
-CarState::setTrackPos(float trackPos)
-{
+void CarState::setTrackPos(float trackPos) {
     this->trackPos = trackPos;
-};
+}
 
-    float
-CarState::getWheelSpinVel(int i)
-{
+float CarState::getWheelSpinVel(int i) {
     assert(i>=0 && i<4);
     return wheelSpinVel[i];
 }
 
-    void
-CarState::setWheelSpinVel(int i, float value)
-{
+void CarState::setWheelSpinVel(int i, float value) {
     assert(i>=0 && i<4);
     wheelSpinVel[i]=value;
 }
 
-    float
-CarState::getZ()
-{
+float CarState::getZ() {
     return z;
-};
+}
 
-    void
-CarState::setZ(float z)
-{
+void CarState::setZ(float z) {
     this->z = z;
-};
+}
+

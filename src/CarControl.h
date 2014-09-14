@@ -16,85 +16,47 @@ copyright            : (C) 2007 Daniele Loiacono
 #ifndef CARCONTROL_H_
 #define CARCONTROL_H_
 
-#include <iostream>
-#include <sstream>
-#include <cstring>
-#include <cassert>
-#include "SimpleParser.h"
+#include <string>
 
-using namespace std;
+class CarControl {
+public:
 
-class CarControl
-{
-    private:
+    CarControl(std::string sensors);
+    CarControl(float accel, float brake, int gear, float steer, float clutch, int focus = 0, int meta = 0);
+    std::string toString();
 
-        // Accelerate command [0,1]
-        float accel;
+    float getAccel();
+    void setAccel (float accel);
 
-        // Brake command [
-        float brake;
+    float getBrake();
+    void setBrake (float brake);
 
-        // Gear command
-        int gear;
+    int getGear();
+    void setGear(int gear);
 
-        // Steering command [-1,1]
-        float steer;
+    float getSteer();
+    void setSteer(float steer);
 
-        // Clutch command [0,1]
-        float clutch;
+    int getMeta();
+    void setMeta(int gear);
 
-        // meta-command
-        int meta;
+    float getClutch();
+    void setClutch(float clutch);
 
-        // focus command [-90,90], i.e. angle of track sensor focus desired by client
-        int focus;
+    int getFocus();
+    void setFocus(int focus);
 
-    public:
+    const static int META_RESTART = 1;
 
-        CarControl(){};
-
-        CarControl(string sensors);
-
-        CarControl(float accel, float brake, int gear, float steer, float clutch, int focus, int meta=0);
-        CarControl(float accel, float brake, int gear, float steer, float clutch, int focus=0);
-
-        string toString();
-
-        void fromString(string sensors);
-
-        /* Getter and setter methods */
-
-        float getAccel() const;
-
-        void setAccel (float accel);
-
-        float getBrake() const;
-
-        void setBrake (float brake);
-
-        int getGear() const;
-
-        void setGear(int gear);
-
-        float getSteer() const;
-
-        void setSteer(float steer);
-
-        int getMeta() const;
-
-        void setMeta(int gear);
-
-        float getClutch() const;
-
-        void setClutch(float clutch);
-
-        int getFocus();
-
-        void setFocus(int focus);
-
-        // meta-command value for race restart
-        static int META_RESTART;
-
+private:
+    float accel;
+    float brake;
+    int gear;
+    float steer;
+    float clutch;
+    int meta;
+    int focus;
 };
 
-#endif /*CARCONTROL_H_*/
+#endif
+

@@ -21,10 +21,10 @@
 #define KEYBOARDHELPER
 
 #include "CarControl.h"
-#include <SDL.h>
 
 void Keyboard_Init();
 void Keyboard_Quit();
 void Keyboard_Update(CarControl* cc);
 
 #endif
+

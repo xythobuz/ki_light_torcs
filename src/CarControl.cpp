@@ -13,13 +13,11 @@ copyright            : (C) 2007 Daniele Loiacono
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "SimpleParser.h"
 #include "CarControl.h"
 
-// meta-command value for race restart
-int CarControl::META_RESTART=1;
-
-CarControl::CarControl(float accel, float brake, int gear, float steer, float clutch, int focus, int meta)
-{
+CarControl::CarControl(float accel, float brake, int gear, float steer, float clutch, int focus, int meta) {
     this->accel = accel;
     this->brake = brake;
     this->gear  = gear;
@@ -29,41 +27,7 @@ CarControl::CarControl(float accel, float brake, int gear, float steer, float cl
     this->meta = meta;
 }
 
-CarControl::CarControl(float accel, float brake, int gear, float steer, float clutch, int focus)
-{
-    this->accel = accel;
-    this->brake = brake;
-    this->gear  = gear;
-    this->steer = steer;
-    this->clutch = clutch;
-    this->focus = focus;
-    this->meta = 0;
-}
-
-CarControl::CarControl(string sensors)
-{
-    fromString(sensors);
-}
-
-    string
-CarControl::toString()
-{
-    string str;
-
-    str  = SimpleParser::stringify("accel", accel);
-    str += SimpleParser::stringify("brake", brake);
-    str += SimpleParser::stringify("gear",  gear);
-    str += SimpleParser::stringify("steer", steer);
-    str += SimpleParser::stringify("clutch", clutch);
-    str += SimpleParser::stringify("focus",  focus);
-    str += SimpleParser::stringify("meta", meta);
-
-    return str;
-}
-
-    void
-CarControl::fromString(string sensors)
-{
+CarControl::CarControl(string sensors) {
     if (SimpleParser::parse(sensors, "accel", accel)==false)
         accel=0.0;
     if (SimpleParser::parse(sensors, "brake", brake)==false)
@@ -76,92 +40,76 @@ CarControl::fromString(string sensors)
         clutch=0.0;
     if (SimpleParser::parse(sensors, "meta", meta)==false)
         meta=0;
-    if (SimpleParser::parse(sensors, "focus", focus)==false) //ML
-        focus=0; //ML
-    if (focus < -90 || focus > 90)//ML What to do with focus requests out of allowed range?
-        focus=360;//ML A value of 360 is used for not requesting focus readings; -1 is returned as focus reading to the client
+    if (SimpleParser::parse(sensors, "focus", focus)==false)
+        focus=0;
+    if (focus < -90 || focus > 90)
+        focus=360;
 }
 
-float
-CarControl::getAccel() const
-{
+string CarControl::toString() {
+    string str;
+    str  = SimpleParser::stringify("accel", accel);
+    str += SimpleParser::stringify("brake", brake);
+    str += SimpleParser::stringify("gear",  gear);
+    str += SimpleParser::stringify("steer", steer);
+    str += SimpleParser::stringify("clutch", clutch);
+    str += SimpleParser::stringify("focus",  focus);
+    str += SimpleParser::stringify("meta", meta);
+    return str;
+}
+
+float CarControl::getAccel() {
     return this->accel;
-};
+}
 
-    void
-CarControl::setAccel (float accel)
-{
+void CarControl::setAccel (float accel) {
     this->accel = accel;
-};
+}
 
-float
-CarControl::getBrake() const
-{
+float CarControl::getBrake() {
     return this->brake;
-};
+}
 
-    void
-CarControl::setBrake (float brake)
-{
+void CarControl::setBrake (float brake) {
     this->brake = brake;
-};
+}
 
-int
-CarControl::getGear() const
-{
+int CarControl::getGear() {
     return this->gear;
-};
+}
 
-    void
-CarControl::setGear(int gear)
-{
+void CarControl::setGear(int gear) {
     this->gear = gear;
-};
+}
 
-float
-CarControl::getSteer() const
-{
+float CarControl::getSteer() {
     return this->steer;
-};
+}
 
-    void
-CarControl::setSteer(float steer)
-{
+void CarControl::setSteer(float steer) {
     this->steer = steer;
-};
+}
 
-int
-CarControl::getMeta() const
-{
+int CarControl::getMeta() {
     return this->meta;
-};
+}
 
-    void
-CarControl::setMeta(int meta)
-{
+void CarControl::setMeta(int meta) {
     this->meta = meta;
-};
+}
 
-float
-CarControl::getClutch() const
-{
+float CarControl::getClutch() {
     return clutch;
 }
 
-    void
-CarControl::setClutch(float clutch)
-{
+void CarControl::setClutch(float clutch) {
     this->clutch = clutch;
 }
 
-    int
-CarControl::getFocus()
-{
+int CarControl::getFocus() {
     return this->focus;
-};
+}
 
-    void
-CarControl::setFocus(int focus)
-{
+void CarControl::setFocus(int focus) {
     this->focus = focus;
-};
+}
