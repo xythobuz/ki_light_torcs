@@ -52,11 +52,9 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
 int startClient(int argc, char* argv[], Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path, bool manual, bool logging);
 
 int main(int argc, char *argv[]) {
-    string logfile = "data/logfile.txt";
-
     Controller* cntrl = NULL;
-
     int input;
+
     do {
         cout << "   Option Menu" << endl;
         cout << "1. Start manual control with logging" << endl;
@@ -66,15 +64,18 @@ int main(int argc, char *argv[]) {
         cin >> input;
 
         if (input == 1) {
+            string logfile;
+            std::cout << "Logfile path? data/";
+            std::cin >> logfile;
             // Manueller Modus
-            startClient(argc, argv, NULL, logfile, NULL, true, true);
+            startClient(argc, argv, NULL, "data/" + logfile, NULL, true, true);
         } else if (input == 2) {
             // Lazy initialization für Controller
             if (cntrl == NULL)
                 cntrl = new Controller();
 
             // Automatischer Modus
-            startClient(argc, argv, cntrl, logfile, NULL, false, false);
+            startClient(argc, argv, cntrl, "", NULL, false, false);
         }
     } while (input != 0);
 
