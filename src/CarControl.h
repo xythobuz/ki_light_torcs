@@ -1,8 +1,8 @@
 /***************************************************************************
- 
-    file                 : CarControl.h
-    copyright            : (C) 2007 Daniele Loiacono
- 
+
+file                 : CarControl.h
+copyright            : (C) 2007 Daniele Loiacono
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -26,7 +26,7 @@ using namespace std;
 
 class CarControl
 {
-private:
+    private:
 
         // Accelerate command [0,1]
         float accel;
@@ -36,20 +36,20 @@ private:
 
         // Gear command
         int gear;
-        
+
         // Steering command [-1,1]
         float steer;
-        
+
         // Clutch command [0,1]
         float clutch;
 
         // meta-command
         int meta;
 
-  	// focus command [-90,90], i.e. angle of track sensor focus desired by client
-	int focus;
+        // focus command [-90,90], i.e. angle of track sensor focus desired by client
+        int focus;
 
-public:
+    public:
 
         CarControl(){};
 
@@ -65,32 +65,32 @@ public:
         /* Getter and setter methods */
 
         float getAccel() const;
-        
+
         void setAccel (float accel);
-        
+
         float getBrake() const;
-        
+
         void setBrake (float brake);
-        
+
         int getGear() const;
-        
+
         void setGear(int gear);
-        
+
         float getSteer() const;
-        
-        void setSteer(float steer);  
-        
+
+        void setSteer(float steer);
+
         int getMeta() const;
-        
+
         void setMeta(int gear);
 
         float getClutch() const;
 
         void setClutch(float clutch);
 
-		int getFocus();
+        int getFocus();
 
-		void setFocus(int focus);
+        void setFocus(int focus);
 
         // meta-command value for race restart
         static int META_RESTART;

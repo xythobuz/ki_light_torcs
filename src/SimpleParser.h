@@ -1,8 +1,8 @@
 /***************************************************************************
- 
-    file                 : SimpleParser.h
-    copyright            : (C) 2007 Daniele Loiacono
- 
+
+file                 : SimpleParser.h
+copyright            : (C) 2007 Daniele Loiacono
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -25,7 +25,7 @@ using namespace std;
 
 class SimpleParser
 {
-public:
+    public:
         static bool  parse(string sensors, string tag, float &value);
 
         static bool  parse(string sensors, string tag, int &value);

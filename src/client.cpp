@@ -47,7 +47,7 @@ copyright            : (C) 2007 Daniele Loiacono
 using namespace std;
 
 void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id, unsigned int &maxEpisodes,
-        unsigned int &maxSteps, char *trackName, BaseDriver::tstage &stage);
+        unsigned int &maxSteps, char *trackName, SimpleDriver::tstage &stage);
 
 int startClient(int argc, char* argv[], Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path, bool manual, bool logging);
 
@@ -96,7 +96,7 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
     unsigned int maxEpisodes;
     unsigned int maxSteps;
     char trackName[1000];
-    BaseDriver::tstage stage;
+    SimpleDriver::tstage stage;
 
     struct sockaddr_in serverAddress;
     struct hostent *hostInfo;
@@ -123,11 +123,11 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
     cout << "MAX_EPISODES: " << maxEpisodes << endl;
     cout << "TRACKNAME: " << trackName << endl;
 
-    if (stage == BaseDriver::WARMUP)
+    if (stage == SimpleDriver::WARMUP)
         cout << "STAGE: WARMUP" << endl;
-    else if (stage == BaseDriver::QUALIFYING)
+    else if (stage == SimpleDriver::QUALIFYING)
         cout << "STAGE:QUALIFYING" << endl;
-    else if (stage == BaseDriver::RACE)
+    else if (stage == SimpleDriver::RACE)
         cout << "STAGE: RACE" << endl;
     else
         cout << "STAGE: UNKNOWN" << endl;
@@ -239,7 +239,6 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
 
                 if (strcmp(buf,"***restart***")==0)
                 {
-                    d.onRestart();
                     cout << "Client Restart" << endl;
                     break;
                 }
@@ -285,9 +284,9 @@ int startClient(int argc, char *argv[], Controller* cntrl, string logfile, vecto
 }
 
 //void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id, unsigned int &maxEpisodes,
-//		  unsigned int &maxSteps,bool &noise, double &noiseAVG, double &noiseSTD, long &seed, char *trackName, BaseDriver::tstage &stage)
+//		  unsigned int &maxSteps,bool &noise, double &noiseAVG, double &noiseSTD, long &seed, char *trackName, SimpleDriver::tstage &stage)
 void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id, unsigned int &maxEpisodes,
-        unsigned int &maxSteps, char *trackName, BaseDriver::tstage &stage)
+        unsigned int &maxSteps, char *trackName, SimpleDriver::tstage &stage)
 {
     int		i;
 
@@ -302,7 +301,7 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
     //    noiseSTD=0.05;
     //    seed=0;
     strcpy(trackName,"unknown");
-    stage=BaseDriver::UNKNOWN;
+    stage=SimpleDriver::UNKNOWN;
 
 
     i = 1;
@@ -347,10 +346,10 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
         {
             int temp;
             sscanf(argv[i],"stage:%d",&temp);
-            stage = (BaseDriver::tstage) temp;
+            stage = (SimpleDriver::tstage) temp;
             i++;
-            if (stage<BaseDriver::WARMUP || stage > BaseDriver::RACE)
-                stage = BaseDriver::UNKNOWN;
+            if (stage<SimpleDriver::WARMUP || stage > SimpleDriver::RACE)
+                stage = SimpleDriver::UNKNOWN;
         }
         else {
             i++;		/* ignore bad args */

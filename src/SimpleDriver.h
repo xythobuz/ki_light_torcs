@@ -1,11 +1,11 @@
 /***************************************************************************
 
-    file                 : SimpleDriver.h
-    copyright            : (C) 2007 Daniele Loiacono
+file                 : SimpleDriver.h
+copyright            : (C) 2007 Daniele Loiacono
 
  ***************************************************************************/
 
- /***************************************************************************
+/***************************************************************************
  * Modifications:                                                          *
  * DATE         AUTHOR          CHANGES                                    *
  * ------------------------------------------------------------------------*
@@ -20,6 +20,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 #ifndef SIMPLEDRIVER_H_
 #define SIMPLEDRIVER_H_
 
@@ -27,7 +28,7 @@
 #include <cmath>
 #include <map>
 #include <vector>
-#include "BaseDriver.h"
+
 #include "CarState.h"
 #include "CarControl.h"
 #include "SimpleParser.h"
@@ -35,43 +36,44 @@
 
 using namespace std;
 
-class SimpleDriver : public BaseDriver
+class SimpleDriver
 {
-private:
-	bool logging;
-	string logfile;
-	vector<pair<CarState, CarControl> >* log;
+    private:
+        bool logging;
+        string logfile;
+        vector<pair<CarState, CarControl> >* log;
 
-	unsigned int position;
-	vector<pair<CarState, CarControl> >* path;
+        unsigned int position;
+        vector<pair<CarState, CarControl> >* path;
 
-	bool manual;
-	// Keyboard Control for the car
-	virtual void manualControl(CarControl* cc);
+        bool manual;
 
-	// controller for this car
-	Controller* automatedControl;
+        // controller for this car
+        Controller* automatedControl;
 
-public:
+    public:
 
-	// Constructor
-	SimpleDriver(Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path, bool manual, bool logging);
+        typedef enum {
+            WARMUP,
+            QUALIFYING,
+            RACE,
+            UNKNOWN
+        } tstage;
 
-	// Print a shutdown message
-	virtual void onShutdown();
+        tstage stage;
+        char trackName[100];
 
-	// Print a restart message
-	virtual void onRestart();
+        // Constructor
+        SimpleDriver(Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path, bool manual, bool logging);
 
-	// Initialization of the desired angles for the rangefinders
-	virtual void init(float *angles);
+        // Print a shutdown message
+        void onShutdown();
 
-    // the drive function wiht string input and output
-	virtual string drive(string sensors);
+        // Initialization of the desired angles for the rangefinders
+        void init(float *angles);
 
-    // drive function that exploits the CarState and CarControl wrappers as input and output.
-	// SimpleDriver implements a simple and heuristic controller for driving
-	virtual CarControl wDrive(CarState cs);
+        // the drive function wiht string input and output
+        string drive(string sensors);
 };
 
 #endif /*SIMPLEDRIVER_H_*/

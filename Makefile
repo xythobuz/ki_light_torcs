@@ -18,8 +18,7 @@ OBJECTS += build/keyboard.o
 OBJECTS += build/SimpleDriver.o
 OBJECTS += build/SimpleParser.o
 
-HEADERS = src/BaseDriver.h
-HEADERS += src/CarControl.h
+HEADERS = src/CarControl.h
 HEADERS += src/CarState.h
 HEADERS += src/controller.h
 HEADERS += src/keyboard.h

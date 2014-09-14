@@ -1,8 +1,8 @@
 /***************************************************************************
- 
-    file                 : CarState.h
-    copyright            : (C) 2007 Daniele Loiacono
- 
+
+file                 : CarState.h
+copyright            : (C) 2007 Daniele Loiacono
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -31,7 +31,7 @@ using namespace std;
 class CarState
 {
 
-private:
+    private:
         float angle;
         float curLapTime;
         float damage;
@@ -51,36 +51,36 @@ private:
         float trackPos;
         float wheelSpinVel[4];
         float z;
-        
 
-public:
-	
-		CarState(){};
+
+    public:
+
+        CarState(){};
 
         CarState(string sensors);
 
         string toString();
 
         /* Getter and setter methods */
-        
+
         float getAngle();
-        
+
         void setAngle(float angle);
-        
+
         float getCurLapTime();
-        
+
         void setCurLapTime(float curLapTime);
-        
+
         float getDamage();
-        
+
         void setDamage(float damage);
-        
+
         float getDistFromStart();
-        
+
         void setDistFromStart(float distFromStart);
-        
-        float getDistRaced();        
-        
+
+        float getDistRaced();
+
         void setDistRaced(float distRaced);
 
         float getFocus(int i);
@@ -88,51 +88,51 @@ public:
         void setFocus(int i, float value);
 
         float getFuel();
-        
+
         void setFuel(float fuel);
-        
+
         int getGear();
-        
+
         void setGear(int gear);
-        
+
         float getLastLapTime();
-        
+
         void setLastLapTime(float lastLapTime);
-        
+
         float getOpponents(int i);
-        
+
         void setOpponents(int i, float value);
-        
+
         int getRacePos();
-        
+
         void setRacePos(int racePos);
-        
+
         int getRpm();
-        
+
         void setRpm(int rpm);
-        
+
         float getSpeedX();
-        
+
         void setSpeedX(float speedX);
-        
+
         float getSpeedY();
-        
+
         void setSpeedY(float speedY);
-        
+
         float getSpeedZ();
 
         void setSpeedZ(float speedZ);
 
         float getTrack(int i);
-        
+
         void setTrack(int i, float value);
-        
+
         float getTrackPos();
-        
+
         void setTrackPos(float trackPos);
-        
+
         float getWheelSpinVel(int i);
-        
+
         void setWheelSpinVel(int i, float value);
 
         float getZ();

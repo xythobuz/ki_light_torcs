@@ -1,7 +1,7 @@
 /***************************************************************************
 
-    file                 : CarState.h
-    copyright            : (C) 2007 Daniele Loiacono
+file                 : CarState.h
+copyright            : (C) 2007 Daniele Loiacono
 
  ***************************************************************************/
 
@@ -18,290 +18,290 @@
 
 CarState::CarState(string sensors)
 {
-        SimpleParser::parse(sensors, "angle", this->angle);
-        SimpleParser::parse(sensors, "curLapTime", this->curLapTime);
-        SimpleParser::parse(sensors, "damage", this->damage);
-        SimpleParser::parse(sensors, "distFromStart", this->distFromStart);
-        SimpleParser::parse(sensors, "distRaced", this->distRaced);
-        SimpleParser::parse(sensors, "focus", this->focus, FOCUS_SENSORS_NUM);
-        SimpleParser::parse(sensors, "fuel", this->fuel);
-        SimpleParser::parse(sensors, "gear", this->gear);
-        SimpleParser::parse(sensors, "lastLapTime", this->lastLapTime);
-        SimpleParser::parse(sensors, "opponents", this->opponents, OPPONENTS_SENSORS_NUM);
-        SimpleParser::parse(sensors, "racePos", this->racePos);
-        SimpleParser::parse(sensors, "rpm", this->rpm);
-        SimpleParser::parse(sensors, "speedX", this->speedX);
-        SimpleParser::parse(sensors, "speedY", this->speedY);
-        SimpleParser::parse(sensors, "speedZ", this->speedZ);
-        SimpleParser::parse(sensors, "track", this->track, TRACK_SENSORS_NUM);
-        SimpleParser::parse(sensors, "trackPos", this->trackPos);
-        SimpleParser::parse(sensors, "wheelSpinVel", this->wheelSpinVel, 4);
-        SimpleParser::parse(sensors, "z", this->z);
+    SimpleParser::parse(sensors, "angle", this->angle);
+    SimpleParser::parse(sensors, "curLapTime", this->curLapTime);
+    SimpleParser::parse(sensors, "damage", this->damage);
+    SimpleParser::parse(sensors, "distFromStart", this->distFromStart);
+    SimpleParser::parse(sensors, "distRaced", this->distRaced);
+    SimpleParser::parse(sensors, "focus", this->focus, FOCUS_SENSORS_NUM);
+    SimpleParser::parse(sensors, "fuel", this->fuel);
+    SimpleParser::parse(sensors, "gear", this->gear);
+    SimpleParser::parse(sensors, "lastLapTime", this->lastLapTime);
+    SimpleParser::parse(sensors, "opponents", this->opponents, OPPONENTS_SENSORS_NUM);
+    SimpleParser::parse(sensors, "racePos", this->racePos);
+    SimpleParser::parse(sensors, "rpm", this->rpm);
+    SimpleParser::parse(sensors, "speedX", this->speedX);
+    SimpleParser::parse(sensors, "speedY", this->speedY);
+    SimpleParser::parse(sensors, "speedZ", this->speedZ);
+    SimpleParser::parse(sensors, "track", this->track, TRACK_SENSORS_NUM);
+    SimpleParser::parse(sensors, "trackPos", this->trackPos);
+    SimpleParser::parse(sensors, "wheelSpinVel", this->wheelSpinVel, 4);
+    SimpleParser::parse(sensors, "z", this->z);
 }
 
-string
+    string
 CarState::toString()
 {
-	string str;
-	str  = SimpleParser::stringify("angle", this->angle);
-	str += SimpleParser::stringify("curLapTime", this->curLapTime);
-	str += SimpleParser::stringify("damage", this->damage);
-	str += SimpleParser::stringify("distFromStart", this->distFromStart);
-	str += SimpleParser::stringify("distRaced", this->distRaced);
-	str += SimpleParser::stringify("focus", this->focus, FOCUS_SENSORS_NUM);
-	str += SimpleParser::stringify("fuel", this->fuel);
-	str += SimpleParser::stringify("gear", this->gear);
-	str += SimpleParser::stringify("lastLapTime", this->lastLapTime);
-	str += SimpleParser::stringify("opponents", this->opponents, OPPONENTS_SENSORS_NUM);
-	str += SimpleParser::stringify("racePos", this->racePos);
-	str += SimpleParser::stringify("rpm", this->rpm);
-	str += SimpleParser::stringify("speedX", this->speedX);
-	str += SimpleParser::stringify("speedY", this->speedY);
-	str += SimpleParser::stringify("speedZ", this->speedZ);
-	str += SimpleParser::stringify("track", this->track, TRACK_SENSORS_NUM);
-	str += SimpleParser::stringify("trackPos", this->trackPos);
-	str += SimpleParser::stringify("wheelSpinVel", this->wheelSpinVel, 4);
-	str += SimpleParser::stringify("z", this->z);
+    string str;
+    str  = SimpleParser::stringify("angle", this->angle);
+    str += SimpleParser::stringify("curLapTime", this->curLapTime);
+    str += SimpleParser::stringify("damage", this->damage);
+    str += SimpleParser::stringify("distFromStart", this->distFromStart);
+    str += SimpleParser::stringify("distRaced", this->distRaced);
+    str += SimpleParser::stringify("focus", this->focus, FOCUS_SENSORS_NUM);
+    str += SimpleParser::stringify("fuel", this->fuel);
+    str += SimpleParser::stringify("gear", this->gear);
+    str += SimpleParser::stringify("lastLapTime", this->lastLapTime);
+    str += SimpleParser::stringify("opponents", this->opponents, OPPONENTS_SENSORS_NUM);
+    str += SimpleParser::stringify("racePos", this->racePos);
+    str += SimpleParser::stringify("rpm", this->rpm);
+    str += SimpleParser::stringify("speedX", this->speedX);
+    str += SimpleParser::stringify("speedY", this->speedY);
+    str += SimpleParser::stringify("speedZ", this->speedZ);
+    str += SimpleParser::stringify("track", this->track, TRACK_SENSORS_NUM);
+    str += SimpleParser::stringify("trackPos", this->trackPos);
+    str += SimpleParser::stringify("wheelSpinVel", this->wheelSpinVel, 4);
+    str += SimpleParser::stringify("z", this->z);
 
-	return str;
+    return str;
 
 }
 
-float
+    float
 CarState::getAngle()
 {
-        return angle;
+    return angle;
 };
 
-void
+    void
 CarState::setAngle(float angle)
 {
-        this->angle = angle;
+    this->angle = angle;
 };
 
-float
+    float
 CarState::getCurLapTime()
 {
-        return curLapTime;
+    return curLapTime;
 };
 
-void
+    void
 CarState::setCurLapTime(float curLapTime)
 {
-        this->curLapTime = curLapTime;
+    this->curLapTime = curLapTime;
 };
 
-float
+    float
 CarState::getDamage()
 {
-        return damage;
+    return damage;
 };
 
-void
+    void
 CarState::setDamage(float damage)
 {
-        this->damage = damage;
+    this->damage = damage;
 };
 
-float
+    float
 CarState::getDistFromStart()
 {
-        return distFromStart;
+    return distFromStart;
 };
 
-void
+    void
 CarState::setDistFromStart(float distFromStart)
 {
-        this->distFromStart = distFromStart;
+    this->distFromStart = distFromStart;
 };
 
-float
+    float
 CarState::getDistRaced()
 {
-        return distRaced;
+    return distRaced;
 };
 
-void
+    void
 CarState::setDistRaced(float distRaced)
 {
-        this->distRaced = distRaced;
+    this->distRaced = distRaced;
 };
 
-float
+    float
 CarState::getFocus(int i)
 {
-        assert(i>=0 && i<FOCUS_SENSORS_NUM);
-        return focus[i];
+    assert(i>=0 && i<FOCUS_SENSORS_NUM);
+    return focus[i];
 };
 
 
-void
+    void
 CarState::setFocus(int i, float value)
 {
-        assert(i>=0 && i<FOCUS_SENSORS_NUM);
-        this->focus[i] = value;
+    assert(i>=0 && i<FOCUS_SENSORS_NUM);
+    this->focus[i] = value;
 };
 
-float
+    float
 CarState::getFuel()
 {
-        return fuel;
+    return fuel;
 };
 
-void
+    void
 CarState::setFuel(float fuel)
 {
-        this->fuel = fuel;
+    this->fuel = fuel;
 };
 
-int
+    int
 CarState::getGear()
 {
-        return gear;
+    return gear;
 };
 
-void
+    void
 CarState::setGear(int gear)
 {
-        this->gear = gear;
+    this->gear = gear;
 };
 
-float
+    float
 CarState::getLastLapTime()
 {
-        return lastLapTime;
+    return lastLapTime;
 };
 
-void
+    void
 CarState::setLastLapTime(float lastLapTime)
 {
-        this->lastLapTime = lastLapTime;
+    this->lastLapTime = lastLapTime;
 };
 
-float
+    float
 CarState::getOpponents(int i)
 {
-        assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
-        return opponents[i];
+    assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
+    return opponents[i];
 
 };
 
-void
+    void
 CarState::setOpponents(int i, float value)
 {
-        assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
-        this->opponents[i] = value;
+    assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
+    this->opponents[i] = value;
 };
 
-int
+    int
 CarState::getRacePos()
 {
-        return racePos;
+    return racePos;
 };
 
-void
+    void
 CarState::setRacePos(int racePos)
 {
-        this->racePos = racePos;
+    this->racePos = racePos;
 };
 
-int
+    int
 CarState::getRpm()
 {
-        return rpm;
+    return rpm;
 };
 
-void
+    void
 CarState::setRpm(int rpm)
 {
-        this->rpm = rpm;
+    this->rpm = rpm;
 };
 
-float
+    float
 CarState::getSpeedX()
 {
-        return speedX;
+    return speedX;
 };
 
-void
+    void
 CarState::setSpeedX(float speedX)
 {
-        this->speedX = speedX;
+    this->speedX = speedX;
 };
 
-float
+    float
 CarState::getSpeedY()
 {
-        return speedY;
+    return speedY;
 };
 
-void
+    void
 CarState::setSpeedY(float speedY)
 {
-        this->speedY = speedY;
+    this->speedY = speedY;
 };
 
-float
+    float
 CarState::getSpeedZ()
 {
-        return speedZ;
+    return speedZ;
 };
 
 
-void
+    void
 CarState::setSpeedZ(float speedZ)
 {
-        this->speedZ = speedZ;
+    this->speedZ = speedZ;
 };
 
-float
+    float
 CarState::getTrack(int i)
 {
-        assert(i>=0 && i<TRACK_SENSORS_NUM);
-        return track[i];
+    assert(i>=0 && i<TRACK_SENSORS_NUM);
+    return track[i];
 };
 
 
-void
+    void
 CarState::setTrack(int i, float value)
 {
-        assert(i>=0 && i<TRACK_SENSORS_NUM);
-        this->track[i] = value;
+    assert(i>=0 && i<TRACK_SENSORS_NUM);
+    this->track[i] = value;
 };
 
-float
+    float
 CarState::getTrackPos()
 {
-        return trackPos;
+    return trackPos;
 };
 
-void
+    void
 CarState::setTrackPos(float trackPos)
 {
-        this->trackPos = trackPos;
+    this->trackPos = trackPos;
 };
 
-float
+    float
 CarState::getWheelSpinVel(int i)
 {
-	assert(i>=0 && i<4);
-	return wheelSpinVel[i];
+    assert(i>=0 && i<4);
+    return wheelSpinVel[i];
 }
 
-void
+    void
 CarState::setWheelSpinVel(int i, float value)
 {
-	assert(i>=0 && i<4);
-	wheelSpinVel[i]=value;
+    assert(i>=0 && i<4);
+    wheelSpinVel[i]=value;
 }
 
-float
+    float
 CarState::getZ()
 {
-        return z;
+    return z;
 };
 
-void
+    void
 CarState::setZ(float z)
 {
     this->z = z;
