@@ -1,8 +1,8 @@
 /***************************************************************************
- 
+
     file                 : SimpleDriver.h
     copyright            : (C) 2007 Daniele Loiacono
- 
+
  ***************************************************************************/
 
  /***************************************************************************
@@ -11,7 +11,7 @@
  * ------------------------------------------------------------------------*
  * 2011-10-29	Stefan Moebius	Removed unused declarations                *
  ***************************************************************************/
- 
+
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,12 +31,11 @@
 #include "CarState.h"
 #include "CarControl.h"
 #include "SimpleParser.h"
-#include "WrapperBaseDriver.h"
 #include "controller.h"
 
 using namespace std;
 
-class SimpleDriver : public WrapperBaseDriver
+class SimpleDriver : public BaseDriver
 {
 private:
 	bool logging;
@@ -48,28 +47,31 @@ private:
 
 	bool manual;
 	// Keyboard Control for the car
-	virtual void manualControl(CarControl* cc);	
+	virtual void manualControl(CarControl* cc);
 
 	// controller for this car
 	Controller* automatedControl;
 
 public:
-	
+
 	// Constructor
 	SimpleDriver(Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path, bool manual, bool logging);
 
-	// SimpleDriver implements a simple and heuristic controller for driving
-	virtual CarControl wDrive(CarState cs);
-
-	// Print a shutdown message 
+	// Print a shutdown message
 	virtual void onShutdown();
-	
-	// Print a restart message 
+
+	// Print a restart message
 	virtual void onRestart();
 
 	// Initialization of the desired angles for the rangefinders
 	virtual void init(float *angles);
-	
+
+    // the drive function wiht string input and output
+	virtual string drive(string sensors);
+
+    // drive function that exploits the CarState and CarControl wrappers as input and output.
+	// SimpleDriver implements a simple and heuristic controller for driving
+	virtual CarControl wDrive(CarState cs);
 };
 
 #endif /*SIMPLEDRIVER_H_*/

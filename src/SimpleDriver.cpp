@@ -4,7 +4,7 @@ file                 : SimpleDriver.cpp
 copyright            : (C) 2007 Daniele Loiacono
 
 	Modifications:
-	
+
 
 ***************************************************************************/
 
@@ -32,13 +32,13 @@ copyright            : (C) 2007 Daniele Loiacono
 
 // Constructor sets the basic configuration for the Driver
 SimpleDriver::SimpleDriver(Controller* cntrl, string logfile, vector<pair<CarState, CarControl> >* path = NULL, bool manual = false, bool logging = false)
-{	
-	// Es werden die Übergabeparameter in der Instanz gespeichert und entsprechend Keyboard und Log initialisiert, falls gewünscht.
+{
+	// Es werden die Ãœbergabeparameter in der Instanz gespeichert und entsprechend Keyboard und Log initialisiert, falls gewÃ¼nscht.
 	this->automatedControl = cntrl;
 	this->logfile = logfile;
 	this->manual = manual;
 	if(manual)
-		Keyboard_Init();	
+		Keyboard_Init();
 	this->logging = logging;
 	if(logging)
 		this->log = new vector<pair<CarState, CarControl> >;
@@ -51,7 +51,7 @@ void SimpleDriver::manualControl(CarControl* cc)
 {
 	//Tastaturzustand aktualisieren
 	Keyboard_Update(cc);
-	
+
 }
 
 // Hier kommen die Daten vom Server an und es muss entschieden werden mit welchen Commandos man darauf reagieren will.
@@ -64,31 +64,31 @@ CarControl SimpleDriver::wDrive(CarState cs)
 	float brake = 0.0f; // Bremsen
 	float steer = 0.0f; //Lenkrichtung (positiv links, negativ rechts)
 	float clutch = 0.0f; //Kupplung
-//	int gear = 0; //Gang (-1 für Rückwärtsgang)
+//	int gear = 0; //Gang (-1 fÃ¼r RÃ¼ckwÃ¤rtsgang)
 
-	
-	// Der CarControl Vektor der an den Server gesandt wird heisst nextVector. Der Gang wird von der aktuellen Beobachtung übernommen.
-	// Ohne die Übernahme weiß die manuelle Kontrolle nicht wohin sie rauf- oder runterschalten soll.
+
+	// Der CarControl Vektor der an den Server gesandt wird heisst nextVector. Der Gang wird von der aktuellen Beobachtung Ã¼bernommen.
+	// Ohne die Ãœbernahme weiÃŸ die manuelle Kontrolle nicht wohin sie rauf- oder runterschalten soll.
 	CarControl nextVector = CarControl(accel, brake, cs.getGear(), steer, clutch);
 
-	// Bei manueller Steuerung wird der Vektor von der manuellen Kontrolle verändert
+	// Bei manueller Steuerung wird der Vektor von der manuellen Kontrolle verÃ¤ndert
 	if(manual)
 	{
 		manualControl(&nextVector);
 	}
 
 	// Nun erstellen wir einen CarControl Vektor indem die Ergebnisse der automatischen Verabeitung gespeichert werden sollen.
-	// Falls nur manuel gefahren wird braucht man diesen Vektor nicht. Es werden die Werte eingetragen, die von der manuellen Steuerung verändert wurden.
+	// Falls nur manuel gefahren wird braucht man diesen Vektor nicht. Es werden die Werte eingetragen, die von der manuellen Steuerung verÃ¤ndert wurden.
 	CarControl automatedVector = CarControl(nextVector.getAccel(), nextVector.getBrake(), nextVector.getGear(), nextVector.getSteer(), nextVector.getClutch());
 
-	// path == NULL überprüft ob ein vorhandener Pfad nachgefahren werden soll. Falls das so ist, braucht die automatedControl nicht ausgeführt zu werden.
+	// path == NULL Ã¼berprÃ¼ft ob ein vorhandener Pfad nachgefahren werden soll. Falls das so ist, braucht die automatedControl nicht ausgefÃ¼hrt zu werden.
 	if(path == NULL && automatedControl != NULL)
 	{
-		// Es wird die Funktion generateVector an den Controller übergeben, der bei der Erstellung dieser Instanz angegeben wurde.
-		// Die Ergebnisse landen dann in automatedVector.		
+		// Es wird die Funktion generateVector an den Controller Ã¼bergeben, der bei der Erstellung dieser Instanz angegeben wurde.
+		// Die Ergebnisse landen dann in automatedVector.
 		this->automatedControl->generateVector(&cs, &automatedVector);
 
-		// Falls man eine Mischung aus manueller und automatisierter Steuerung wünscht, kann man in diesem Teil die manuellen Werte durch automatisch erstellte austauschen.
+		// Falls man eine Mischung aus manueller und automatisierter Steuerung wÃ¼nscht, kann man in diesem Teil die manuellen Werte durch automatisch erstellte austauschen.
 		if(manual)
 		{
 		//	nextVector.setGear(automatedVector.getGear());
@@ -105,7 +105,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
 	}
 	else if(!manual)
 	{
-		// Diese Routine setzt den nächsten Punkt aus dem vorgegebenen Pfad in den nextVector ein.
+		// Diese Routine setzt den nÃ¤chsten Punkt aus dem vorgegebenen Pfad in den nextVector ein.
 		if(position < (*path).size())
 		{
 			nextVector = (*path)[position].second;
@@ -117,13 +117,13 @@ CarControl SimpleDriver::wDrive(CarState cs)
 		}
 	}
 
-	// Für das Logging werden Sensor- und Aktorendaten an den log Vektor angehängt. Diese werden am Ende eines Rennens in die Datei logfile geschrieben.
+	// FÃ¼r das Logging werden Sensor- und Aktorendaten an den log Vektor angehÃ¤ngt. Diese werden am Ende eines Rennens in die Datei logfile geschrieben.
 	if(logging)
 	{
 		log->push_back(pair<CarState, CarControl>(cs, nextVector));
 	}
 
-	// Übergabe des nextVectors in Richtung Server.
+	// Ãœbergabe des nextVectors in Richtung Server.
 	return nextVector;
 }
 
@@ -159,7 +159,7 @@ void SimpleDriver::onRestart()
 	cout << "Restarting the race!" << endl;
 }
 
-// Verteilung der Winkel für die Sensoren
+// Verteilung der Winkel fÃ¼r die Sensoren
 void SimpleDriver::init(float *angles)
 {
 	for (int i=0; i<5; i++)
@@ -176,3 +176,11 @@ void SimpleDriver::init(float *angles)
 
 	return;
 }
+
+string SimpleDriver::drive(string sensors)
+{
+	CarState cs(sensors);
+	CarControl cc = wDrive(cs);
+	return cc.toString();
+}
+
