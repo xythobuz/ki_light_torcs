@@ -59,7 +59,7 @@ void SimpleDriver::onShutdown() {
         Keyboard_Quit();
 
         cout << "Writing log to harddrive" << endl;
-        ofstream logfile(this->logfile);
+        ofstream logfile(this->logfile.c_str());
         for (unsigned int i = 0; i < (*log).size(); i++) {
             logfile << (*log)[i].first.toString() << endl;
             logfile << (*log)[i].second.toString() << endl;
