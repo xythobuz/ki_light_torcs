@@ -46,6 +46,7 @@ string SimpleDriver::drive(string sensors) {
 
     if (automatedControl == NULL) {
         Keyboard_Update(&nextVector);
+        Controller::automatic(&cs, &nextVector);
         log->push_back(pair<CarState, CarControl>(cs, nextVector));
     } else {
         this->automatedControl->generateVector(&cs, &nextVector);

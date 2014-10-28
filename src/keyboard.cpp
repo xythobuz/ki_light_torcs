@@ -88,7 +88,9 @@ void Keyboard_Update(CarControl* cc) {
                     brake = g;
                 }
                 break;
-            case SDL_JOYBUTTONDOWN:  /* Handle Joystick Button Presses */
+
+            /*
+            case SDL_JOYBUTTONDOWN:
                 if ( event.jbutton.button == 1 ){
                     //B
                     if (cc->getGear() == -1){
@@ -108,6 +110,7 @@ void Keyboard_Update(CarControl* cc) {
                     }
                 }
                 break;
+            */
         }
     }
 }
