@@ -21,6 +21,9 @@ class Controller {
         string getControllerName() { return "ANN controller"; };
 
         static void automatic(CarState* cs, CarControl* cc);
+
+    private:
+        bool fail;
 };
 
 #endif

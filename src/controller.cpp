@@ -15,6 +15,8 @@ const static int dIn = 8;
 const static double eps = 0.5;
 
 Controller::Controller() {
+    fail = false;
+
     std::ifstream dataIn("data/logfile.txt");
     int count = 0;
     for (std::string line; std::getline(dataIn,line);){
@@ -85,13 +87,34 @@ void Controller::generateVector(CarState* cs, CarControl* cc) {
     q[6] = cs->getTrack(5);
     q[7] = cs->getTrack(13);
 
-    tree->annkSearch(q, 1, &i, &dist, eps);
+    if ((cs->getTrackPos() > 1.0f) || (cs->getTrackPos() < -1.0f)) {
+        if (!fail) {
+            fail = true;
+            std::cout << "We have left the map! Trying to recover..." << std::endl;
+        }
+    } else {
+        if (fail) {
+            fail = false;
+            std::cout << "It seems as if we got back on track..." << std::endl;
+        }
+    }
 
-    cc->setAccel(actor[i][0]);
-    cc->setSteer(actor[i][1]);
-    cc->setBrake(actor[i][2]);
+    if (fail) {
+        // Use fail-safe algorithm
+        cc->setAccel(0.5f);
+        cc->setBrake(0.0f);
+        cc->setGear(-1);
+        cc->setSteer(0.0f);
+    } else {
+        // Use Nearest Neighbour search
+        tree->annkSearch(q, 1, &i, &dist, eps);
 
-    automatic(cs, cc);
+        cc->setAccel(actor[i][0]);
+        cc->setSteer(actor[i][1]);
+        cc->setBrake(actor[i][2]);
+
+        automatic(cs, cc);
+    }
 
     delete [] q;
 }
