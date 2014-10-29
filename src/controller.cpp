@@ -123,12 +123,52 @@ void Controller::automatic(CarState* cs, CarControl* cc) {
     int gear = cs->getGear();
     int rpm = cs->getRpm();
 
-    if (rpm > 8500) {
-        if (gear < 6)
-            cc->setGear(gear + 1);
-    } else if (rpm < 6500) {
-        if (gear > 1)
-            cc->setGear(gear - 1);
+	switch(gear) {
+		case 0:
+			cc->setGear(gear + 1);
+			break;
+        case 1:
+            if (rpm > 9000) {
+               cc->setGear(2);
+            }
+            break;
+        case 2:
+            if (rpm < 3800) {
+                cc->setGear(gear - 1);
+            }
+            else if(rpm > 9000) {
+                cc->setGear(gear + 1);
+            }
+            break;
+        case 3:
+            if (rpm < 5500) {
+                cc->setGear(gear - 1);
+            }
+            else if(rpm > 9000) {
+                cc->setGear(gear + 1);
+            }
+            break;
+        case 4:
+            if (rpm < 5800) {
+                cc->setGear(gear - 1);
+            }
+            else if(rpm > 9000) {
+                cc->setGear(gear + 1);
+            }
+            break;
+        case 5:
+            if (rpm < 6100) {
+                cc->setGear(gear - 1);
+            }
+            else if(rpm > 9000) {
+                cc->setGear(gear + 1);
+            }
+            break;
+       case 6:
+            if (rpm < 5800) {
+                cc->setGear(gear - 1);
+            }
+            break;
     }
 }
 

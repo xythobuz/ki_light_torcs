@@ -39,7 +39,7 @@ build/%.o : src/%.cpp $(HEADERS)
 	$(CC) $(CPPFLAGS) $(EXTFLAGS) -c $< -o $@
 
 client: ann $(OBJECTS)
-	$(CC) $(CPPFLAGS) $(EXTFLAGS) $(SDL) -o client $(OBJECTS) -L ann_1.1.2/lib -l ANN
+	$(CC) $(CPPFLAGS) $(EXTFLAGS) -o client $(OBJECTS) -L ann_1.1.2/lib -l ANN  $(SDL)
 
 clean:
 	rm -f client
