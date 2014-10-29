@@ -119,56 +119,30 @@ void Controller::generateVector(CarState* cs, CarControl* cc) {
     delete [] q;
 }
 
+const static int gearCount = 6;
+const static int rpmDown[gearCount] = { -1, 3800, 5500, 5800, 6100, 5800 };
+const static int rpmUp[gearCount]   = { 9000, 9000, 9000, 9000, 9000, -1 };
+
 void Controller::automatic(CarState* cs, CarControl* cc) {
     int gear = cs->getGear();
     int rpm = cs->getRpm();
 
-	switch(gear) {
-		case 0:
-			cc->setGear(gear + 1);
-			break;
-        case 1:
-            if (rpm > 9000) {
-               cc->setGear(2);
-            }
-            break;
-        case 2:
-            if (rpm < 3800) {
+    if (gear == 0) {
+        cc->setGear(1);
+    } else if ((gear >= 1) && (gear <= gearCount)) {
+        if (rpmDown[gear] != -1) {
+            if (rpm < rpmDown[gear]) {
                 cc->setGear(gear - 1);
+                return;
             }
-            else if(rpm > 9000) {
+        }
+
+        if (rpmUp[gear] != -1) {
+            if (rpm > rpmUp[gear]) {
                 cc->setGear(gear + 1);
+                return;
             }
-            break;
-        case 3:
-            if (rpm < 5500) {
-                cc->setGear(gear - 1);
-            }
-            else if(rpm > 9000) {
-                cc->setGear(gear + 1);
-            }
-            break;
-        case 4:
-            if (rpm < 5800) {
-                cc->setGear(gear - 1);
-            }
-            else if(rpm > 9000) {
-                cc->setGear(gear + 1);
-            }
-            break;
-        case 5:
-            if (rpm < 6100) {
-                cc->setGear(gear - 1);
-            }
-            else if(rpm > 9000) {
-                cc->setGear(gear + 1);
-            }
-            break;
-       case 6:
-            if (rpm < 5800) {
-                cc->setGear(gear - 1);
-            }
-            break;
+        }
     }
 }
 
