@@ -130,15 +130,15 @@ void Controller::automatic(CarState* cs, CarControl* cc) {
     if (gear == 0) {
         cc->setGear(1);
     } else if ((gear >= 1) && (gear <= gearCount)) {
-        if (rpmDown[gear] != -1) {
-            if (rpm < rpmDown[gear]) {
+        if (rpmDown[gear - 1] != -1) {
+            if (rpm < rpmDown[gear - 1]) {
                 cc->setGear(gear - 1);
                 return;
             }
         }
 
-        if (rpmUp[gear] != -1) {
-            if (rpm > rpmUp[gear]) {
+        if (rpmUp[gear - 1] != -1) {
+            if (rpm > rpmUp[gear - 1]) {
                 cc->setGear(gear + 1);
                 return;
             }
