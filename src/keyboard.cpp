@@ -58,7 +58,7 @@ void Keyboard_Update(CarControl* cc) {
                     //L
                     //std::cout << "L" << event.jaxis.value << endl;
                     float g;
-                    if ( ( event.jaxis.value < -3200 ) || (event.jaxis.value > 3200 ) )
+                    if ( ( event.jaxis.value < -4500 ) || (event.jaxis.value > 4500 ) )
                         g = ((float) event.jaxis.value) / 32768.0f;
                     else
                         g = 0;
@@ -69,7 +69,7 @@ void Keyboard_Update(CarControl* cc) {
                     //RT
                     //std::cout << "RT" << event.jaxis.value << endl;
                     float g;
-                    if ( ( event.jaxis.value < -3200 ) || (event.jaxis.value > 3200 ) )
+                    if ( ( event.jaxis.value < -4500 ) || (event.jaxis.value > 4500 ) )
                         g = ((float) event.jaxis.value + 32768) / 65535.0f;
                     else
                         g = 0;
@@ -80,7 +80,7 @@ void Keyboard_Update(CarControl* cc) {
                     //LT
                     //std::cout << "LT" << event.jaxis.value << endl;
                     float g;
-                    if ( ( event.jaxis.value < -3200 ) || (event.jaxis.value > 3200 ) )
+                    if ( ( event.jaxis.value < -4500 ) || (event.jaxis.value > 4500 ) )
                         g = ((float) event.jaxis.value + 32768) / 65535.0f;
                     else
                         g = 0;
