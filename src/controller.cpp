@@ -120,25 +120,25 @@ void Controller::generateVector(CarState* cs, CarControl* cc) {
 }
 
 const static int gearCount = 6;
-const static int rpmDown[gearCount] = { -1, 3800, 5500, 5800, 6100, 5800 };
-const static int rpmUp[gearCount]   = { 9000, 9000, 9000, 9000, 9000, -1 };
+const static int speedDown[gearCount] = { -1, 75, 120, 170, 215, 265 };
+const static int speedUp[gearCount]   = { 80, 125, 175, 220, 260, -1 };
 
 void Controller::automatic(CarState* cs, CarControl* cc) {
     int gear = cs->getGear();
-    int rpm = cs->getRpm();
+    int speed = cs->getSpeedX();
 
     if (gear == 0) {
         cc->setGear(1);
     } else if ((gear >= 1) && (gear <= gearCount)) {
-        if (rpmDown[gear - 1] != -1) {
-            if (rpm < rpmDown[gear - 1]) {
+        if (speedDown[gear - 1] != -1) {
+            if (speed < speedDown[gear - 1]) {
                 cc->setGear(gear - 1);
                 return;
             }
         }
 
-        if (rpmUp[gear - 1] != -1) {
-            if (rpm > rpmUp[gear - 1]) {
+        if (speedUp[gear - 1] != -1) {
+            if (speed > speedUp[gear - 1]) {
                 cc->setGear(gear + 1);
                 return;
             }
