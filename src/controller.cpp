@@ -11,8 +11,8 @@ static ANNpointArray sensor;
 static ANNpointArray actor;
 
 const static int dOut = 3;
-const static int dIn = 6;
-const static double eps = 0.5;
+const static int dIn = 10;
+const static double eps = 0.2;
 
 Controller::Controller() {
     fail = false;
@@ -39,13 +39,15 @@ Controller::Controller() {
         }
         CarControl cc(line);
         sensor[i][0] = cs.getAngle();
-        //sensor[i][1] = cs.getSpeedX();
-        //sensor[i][2] = cs.getTrackPos();
+        sensor[i][9] = cs.getSpeedX();
         sensor[i][1] = cs.getTrack(0);
         sensor[i][2] = cs.getTrack(18);
         sensor[i][3] = cs.getTrack(9);
         sensor[i][4] = cs.getTrack(5);
         sensor[i][5] = cs.getTrack(13);
+        sensor[i][6] = cs.getTrack(7);
+        sensor[i][7] = cs.getTrack(11);
+        sensor[i][8] = cs.getDistFromStart();
 
         actor[i][0] = cc.getAccel();
         actor[i][1] = cc.getSteer();
@@ -79,13 +81,15 @@ void Controller::generateVector(CarState* cs, CarControl* cc) {
     ANNidx i;
 
     q[0] = cs->getAngle();
-    //q[1] = cs->getSpeedX();
-    //q[2] = cs->getTrackPos();
+    q[9] = cs->getSpeedX();
     q[1] = cs->getTrack(0);
     q[2] = cs->getTrack(18);
     q[3] = cs->getTrack(9);
     q[4] = cs->getTrack(5);
     q[5] = cs->getTrack(13);
+    q[6] = cs->getTrack(7);
+    q[7] = cs->getTrack(11);
+    q[8] = cs->getDistFromStart();
 
     if ((cs->getTrackPos() > 1.0f) || (cs->getTrackPos() < -1.0f)) {
         if (!fail) {
