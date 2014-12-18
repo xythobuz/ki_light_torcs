@@ -14,6 +14,27 @@ const static int dOut = 3;
 const static int dIn = 10;
 const static double eps = 0.2;
 
+static void fillArray(CarState* cs, ANNpoint q) {
+    // Range: [-pi, pi]
+    q[0] = cs->getAngle() / 3.14159;
+
+    // Range: [0, 200]
+    const static double rangeFactor = 200.0;
+    q[1] = cs->getTrack(0) / rangeFactor;
+    q[2] = cs->getTrack(18) / rangeFactor;
+    q[3] = cs->getTrack(9) / rangeFactor;
+    q[4] = cs->getTrack(5) / rangeFactor;
+    q[5] = cs->getTrack(13) / rangeFactor;
+    q[6] = cs->getTrack(7) / rangeFactor;
+    q[7] = cs->getTrack(11) / rangeFactor;
+
+    // Range: [0, inf]
+    q[8] = cs->getDistFromStart() / 1000.0;
+
+    // Range: [-inf, inf]
+    q[9] = cs->getSpeedX() / 300.0;
+}
+
 Controller::Controller() {
     fail = false;
 
@@ -38,17 +59,8 @@ Controller::Controller() {
             throw 42;
         }
         CarControl cc(line);
-        sensor[i][0] = cs.getAngle();
-        sensor[i][9] = cs.getSpeedX();
-        sensor[i][1] = cs.getTrack(0);
-        sensor[i][2] = cs.getTrack(18);
-        sensor[i][3] = cs.getTrack(9);
-        sensor[i][4] = cs.getTrack(5);
-        sensor[i][5] = cs.getTrack(13);
-        sensor[i][6] = cs.getTrack(7);
-        sensor[i][7] = cs.getTrack(11);
-        sensor[i][8] = cs.getDistFromStart();
 
+        fillArray(&cs, sensor[i]);
         actor[i][0] = cc.getAccel();
         actor[i][1] = cc.getSteer();
         actor[i][2] = cc.getBrake();
@@ -80,16 +92,7 @@ void Controller::generateVector(CarState* cs, CarControl* cc) {
     ANNcoord dist;
     ANNidx i;
 
-    q[0] = cs->getAngle();
-    q[9] = cs->getSpeedX();
-    q[1] = cs->getTrack(0);
-    q[2] = cs->getTrack(18);
-    q[3] = cs->getTrack(9);
-    q[4] = cs->getTrack(5);
-    q[5] = cs->getTrack(13);
-    q[6] = cs->getTrack(7);
-    q[7] = cs->getTrack(11);
-    q[8] = cs->getDistFromStart();
+    fillArray(cs, q);
 
     if ((cs->getTrackPos() > 1.0f) || (cs->getTrackPos() < -1.0f)) {
         if (!fail) {
