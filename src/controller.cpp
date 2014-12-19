@@ -12,27 +12,26 @@ static ANNpointArray actor;
 
 const static int dOut = 3;
 const static int dIn = 10;
-const static double eps = 0.2;
+const static double eps = 0.20;
 
 static void fillArray(CarState* cs, ANNpoint q) {
     // Range: [-pi, pi]
-    q[0] = cs->getAngle() / 3.14159;
+    q[0] = cs->getAngle();
 
     // Range: [0, 200]
-    const static double rangeFactor = 200.0;
-    q[1] = cs->getTrack(0) / rangeFactor;
-    q[2] = cs->getTrack(18) / rangeFactor;
-    q[3] = cs->getTrack(9) / rangeFactor;
-    q[4] = cs->getTrack(5) / rangeFactor;
-    q[5] = cs->getTrack(13) / rangeFactor;
-    q[6] = cs->getTrack(7) / rangeFactor;
-    q[7] = cs->getTrack(11) / rangeFactor;
+    q[1] = cs->getTrack(0);
+    q[2] = cs->getTrack(18);
+    q[3] = cs->getTrack(9);
+    q[4] = cs->getTrack(5);
+    q[5] = cs->getTrack(13);
+    q[6] = cs->getTrack(7);
+    q[7] = cs->getTrack(11);
 
     // Range: [0, inf]
-    q[8] = cs->getDistFromStart() / 1000.0;
+    q[8] = cs->getDistFromStart();
 
     // Range: [-inf, inf]
-    q[9] = cs->getSpeedX() / 300.0;
+    q[9] = cs->getSpeedX();
 }
 
 Controller::Controller() {
